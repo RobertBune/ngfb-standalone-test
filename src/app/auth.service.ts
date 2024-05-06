@@ -1,10 +1,12 @@
-import { Injectable, computed, signal } from '@angular/core';
-import { User, getAuth, signInAnonymously } from '@angular/fire/auth';
+import { Injectable, computed, inject, signal } from '@angular/core';
+import { Auth, User, signInAnonymously } from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+
+  private auth = inject(Auth);
 
   private currentUserSignal = signal<User | null>(null);
   readonly currentUser = computed(() => this.currentUserSignal() !== null ? 'Anonymous' : null);
@@ -12,19 +14,17 @@ export class AuthService {
 
   constructor() {
     setTimeout(() => {
-      const auth = getAuth();
-      if (auth.currentUser !== null) {
-        this.currentUserSignal.set(auth.currentUser);
+      if (this.auth.currentUser !== null) {
+        this.currentUserSignal.set(this.auth.currentUser);
       }
     }, 1000);
   }
 
   public loginAnon(): Promise<boolean> {
-    const auth = getAuth();
-    return signInAnonymously(auth)
+    return signInAnonymously(this.auth)
       .then((credential) => {
         const user = credential.user;
-        this.currentUserSignal.set(auth.currentUser);
+        this.currentUserSignal.set(this.auth.currentUser);
         return true;
       })
       .catch((error) => {
@@ -36,8 +36,7 @@ export class AuthService {
   }
 
   logout(): Promise<boolean> {
-    const auth = getAuth();
-    return auth.signOut()
+    return this.auth.signOut()
       .then(() => {
         this.currentUserSignal.set(null);
         return true;
