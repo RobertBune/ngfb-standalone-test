@@ -88,6 +88,23 @@
             ],
             "scripts": []
           }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {
+            "version": 2
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "ngfb-standalone-test:build:production",
+              "serveTarget": "ngfb-standalone-test:serve:production"
+            },
+            "development": {
+              "buildTarget": "ngfb-standalone-test:build:development",
+              "serveTarget": "ngfb-standalone-test:serve:development"
+            }
+          },
+          "defaultConfiguration": "production"
         }
       }
     }

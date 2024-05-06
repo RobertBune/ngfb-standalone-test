@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "ngfb-standalone-test": {
+      "hosting": {
+        "ngfb-standalone-test": [
+          "ngfb-standalone-test"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "ngfb-standalone-test"
+  }
+}
